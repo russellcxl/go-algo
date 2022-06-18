@@ -4,7 +4,22 @@ import (
 	"fmt"
 )
 
-// ----------------------------- parameters and models --------------------------------
+// ----------------------------- hashing --------------------------------
+
+/*
+Overview:
+
+	For any key (string), convert it into an index (int). Index should fall within the MAP_SIZE.
+	You can do this by using modulus.
+
+	Once you have the index, you look for the matching node in your map i.e. HashMap[index].
+	At this point, given that your MAP_SIZE is small, there will be index collisions.
+	For example, maybe the keys "abc" and "xyz" convert into the same index.
+
+	To deal with this, we will loop through all the nodes of HashMap[index]
+	If any of the nodes' key matches the input key, great!
+
+ */
 
 const MAP_SIZE = 50
 
@@ -13,9 +28,9 @@ type HashMap struct {
 }
 
 type Node struct {
-	key   string
-	value string
-	next  *Node
+	Key   string
+	Value string
+	Next  *Node
 }
 
 func NewDict() *HashMap {
@@ -48,26 +63,53 @@ func (h *HashMap) Insert(key string, value string) {
 
 	if h.Data[index] == nil {
 		// index is empty, go ahead and insert
-		h.Data[index] = &Node{key: key, value: value}
+		h.Data[index] = &Node{Key: key, Value: value}
 	} else {
-		// there is a collision, get into linked-list mode
-		starting_node := h.Data[index]
-		for ; starting_node.next != nil; starting_node = starting_node.next {
-			if starting_node.key == key {
-				// the key exists, its a modifying operation
-				starting_node.value = value
+		// there is a collision, start going through the linked-list
+		startingNode := h.Data[index]
+		for startingNode != nil {
+			// the key exists, modify its value
+			if startingNode.Key == key {
+				startingNode.Value = value
 				return
 			}
+			startingNode = startingNode.Next
 		}
-		starting_node.next = &Node{key: key, value: value}
+		// if the key does not exist and you've reached the last node, insert key
+		startingNode = &Node{Key: key, Value: value}
 	}
+}
+
+func (h *HashMap) Get(key string) (string, bool) {
+	index := getIndex(key)
+
+	// if index is empty, return false
+	if h.Data[index] == nil {
+		return "", false
+	}
+
+	// if index isn't empty, go through nodes and look for key
+	startNode := h.Data[index]
+
+	for startNode != nil {
+		if startNode.Key == key {
+			return startNode.Value, true
+		}
+		startNode = startNode.Next
+	}
+
+	return "", false
 }
 
 // ----------------------------- main --------------------------------
 
 func main() {
-	//a := NewDict()
-	//fmt.Printf("%v+", a)
-
-	fmt.Printf("%08b\n%08b", hash("a"), hash("b"))
+	a := NewDict()
+	a.Insert("name", "matt")
+	a.Insert("name", "tracy")
+	if value, ok := a.Get("name"); ok {
+		fmt.Println(value)
+	} else {
+		fmt.Println("Value did not match!")
+	}
 }
