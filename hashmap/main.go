@@ -19,7 +19,7 @@ Overview:
 	To deal with this, we will loop through all the nodes of HashMap[index]
 	If any of the nodes' key matches the input key, great!
 
- */
+*/
 
 const MAP_SIZE = 50
 
@@ -105,7 +105,6 @@ func (h *HashMap) Get(key string) (string, bool) {
 
 func main() {
 	a := NewDict()
-	a.Insert("name", "matt")
 	a.Insert("name", "tracy")
 	if value, ok := a.Get("name"); ok {
 		fmt.Println(value)
