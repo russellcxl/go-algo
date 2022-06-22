@@ -23,8 +23,10 @@ func burstLimiter() {
 		for {
 			<-t.C
 
-			// I really don't understand why this has to be MAX_LIMIT - 1
+			// don't understand why this has to be MAX_LIMIT - 1
+			// something to do with <-buf immediately consuming one bool
 			for len(buf) < MAX_LIMIT - 1 {
+				fmt.Println("INSERTING")
 				buf <- true
 			}
 		}
@@ -41,7 +43,9 @@ func burstLimiter() {
 	close(reqs)
 
 	for _ = range reqs {
+		// buffer will block; will be refreshed every second
 		<-buf
+
 		fmt.Printf("task received: %s\n", time.Now().String())
 	}
 
