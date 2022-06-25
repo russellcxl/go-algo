@@ -75,11 +75,12 @@ type timePeriod struct {
 	sync.Mutex
 	last       time.Time
 	sleepFor   time.Duration
-	perRequest time.Duration
+	perRequest time.Duration // how long a req is given to finish
 }
 
 func newTimePeriod(rps int) *timePeriod {
 	return &timePeriod{
+		// e.g. if rps = 10, each req has 0.1s to finish
 		perRequest: time.Second / time.Duration(rps),
 	}
 }
@@ -99,7 +100,7 @@ func (t *timePeriod) Take() {
 	// the perRequest budget and how long the last request took.
 	// Since the request may take longer than the budget, this number
 	// can get negative, and is summed across requests.
-	t.sleepFor = t.sleepFor + t.perRequest - cur.Sub(t.last)
+	t.sleepFor += t.perRequest - cur.Sub(t.last)
 	t.last = cur
 
 	// We shouldn't allow sleepFor to get too negative, since it would mean that
