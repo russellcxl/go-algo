@@ -34,6 +34,9 @@ func (m *MaxHeap) Extract() (int, error) {
 	return extracted, nil
 }
 
+// when new element inserted at the end of the list,
+// keep comparing the element to its parent
+// swapping if it is larger than its parent
 func (m *MaxHeap) maxHeapifyUp(i int) {
 	// while parent is smaller than current
 	// swap parent and current
@@ -44,6 +47,9 @@ func (m *MaxHeap) maxHeapifyUp(i int) {
 	}
 }
 
+// used when new element is inserted at the root
+// for example, after extracting the root and replacing the root with the last,
+// you have to re-heapify the heap
 func (m *MaxHeap) maxHeapifyDown(i int) {
 	lastIndex := len(m.array) - 1
 
