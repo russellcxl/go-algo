@@ -1,3 +1,3 @@
 # go-algo
 
-i would like to go for a swim now
+i would like to go for a swim too
