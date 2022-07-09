@@ -1,11 +1,5 @@
 package bst
 
-type Node struct{
-	Val int
-	Left *Node
-	Right *Node
-}
-
 func inorder(root *Node) []int {
 	
 	// inorder: left > root > right > ...
