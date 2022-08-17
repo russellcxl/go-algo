@@ -1,0 +1,3 @@
+- scaffold with `ginkgo bootstrap`
+- run tests `ginkgo` -- this calls `go test` internally
+- `ginkgo generate book` to generate *_test.go file 
