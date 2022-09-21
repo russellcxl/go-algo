@@ -10,6 +10,9 @@ type nums struct {
 }
 
 func main() {
+
+	fmt.Println("TEST")
+
 	arr := []int{1, 2, 3}
 	n := nums{nums: arr}
 	test3(n)
