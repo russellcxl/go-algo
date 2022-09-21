@@ -14,6 +14,8 @@ func main() {
 	n := nums{nums: arr}
 	test3(n)
 	fmt.Println(n)
+
+	fmt.Println("TEST BELOW")
 }
 
 func test3(n nums) {
